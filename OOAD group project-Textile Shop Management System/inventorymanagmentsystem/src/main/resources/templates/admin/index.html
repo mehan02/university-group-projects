@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin-Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body class="d-flex flex-column min-vh-100 bg-dark" >
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/admin/">DILSHAN FASHION</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="/admin/">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="/admin/products">Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="/admin/orders">Orders</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="/admin/suppliers">Suppliers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="/admin/complaints">Complaints</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ms-auto d-flex align-items-center" sec:authorize="isAuthenticated()">
+        <li class="nav-item me-2">
+          <span class="navbar-text text-dark">Admin: <span sec:authentication="name"></span></span>
+        </li>
+        <li class="nav-item me-2">
+          <a class="btn btn-danger" href="/logout">Logout</a>
+        </li>
+        <li class="nav-item dropdown">
+          <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="registerDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Options
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="registerDropdown">
+            <li><a class="dropdown-item" href="/admin/register">Register</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-5">
+  <h1 class="text-center text-info">Welcome!</h1>
+
+  <!-- Dashboard Statistics -->
+  <div class="row my-4">
+    <div class="col-md-3">
+      <div class="card text-white bg-success">
+        <div class="card-header">Total Sales Today</div>
+        <div class="card-body">
+          <h5 class="card-title"><span th:text="${{totalSalesToday}}"></span></h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-success">
+        <div class="card-header">Total Sales This Week</div>
+        <div class="card-body">
+          <h5 class="card-title"><span th:text="${{totalSalesThisWeek}}"></span></h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-success">
+        <div class="card-header">Total Sales This Month</div>
+        <div class="card-body">
+          <h5 class="card-title"><span th:text="${{totalSalesThisMonth}}"></span></h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-success">
+        <div class="card-header">Total Sales Last Six Months</div>
+        <div class="card-body">
+          <h5 class="card-title"><span th:text="${{totalSalesPastSixMonths}}"></span></h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row my-4">
+    <div class="col-md-12">
+      <div class="card text-white bg-danger">
+        <div class="card-body">
+          <h5 class="card-title bg-danger text-center">Low Stock Alert!</h5>
+          <table class="table text-center  table-danger">
+            <thead>
+            <tr>
+              <th>ProductId</th>
+              <th>Name</th>
+              <th>Stock Level</th>
+              <th>Supplier</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${lowStockProducts}">
+              <td th:text="${item.productId}"></td>
+              <td th:text="${item.name}"></td>
+              <td th:text="${item.stockQuantity}"></td>
+              <td th:text="${item.supplier.supplierName}"></td>
+            </tr>
+            <!-- If no low stock items -->
+            <tr th:if="${#lists.isEmpty(lowStockProducts)}">
+              <td colspan="4" class="text-center">No items with low stock.</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<footer class="bg-secondary text-white py-4 mt-auto">
+  <div class="container text-center">
+    <p>&copy; 2024 Dilshan Fashion. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
